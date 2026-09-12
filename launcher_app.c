@@ -31,7 +31,7 @@ static const int POLL_INTERVAL_MS = 2000;
 static const int RELAUNCH_GRACE_SECONDS = 6;
 
 static void ShowErr(const wchar_t *msg) {
-    MessageBoxW(NULL, msg, L"Launcher", MB_OK | MB_ICONERROR);
+    MessageBoxW(NULL, msg, L"DisplayForge", MB_OK | MB_ICONERROR);
 }
 
 static BOOL GetCurrentMode(DEVMODEW *mode) {

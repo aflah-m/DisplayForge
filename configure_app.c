@@ -49,11 +49,11 @@ static HWND g_hEditAppId, g_hEditGamePath, g_hComboRes, g_hComboHz;
 static HWND g_hEditProfileName, g_hListProfiles;
 
 static void ShowErr(HWND parent, const wchar_t *msg) {
-    MessageBoxW(parent, msg, L"Configure", MB_OK | MB_ICONERROR);
+    MessageBoxW(parent, msg, L"DisplayForge - Configure", MB_OK | MB_ICONERROR);
 }
 
 static void ShowInfo(HWND parent, const wchar_t *msg) {
-    MessageBoxW(parent, msg, L"Configure", MB_OK | MB_ICONINFORMATION);
+    MessageBoxW(parent, msg, L"DisplayForge - Configure", MB_OK | MB_ICONINFORMATION);
 }
 
 // ---------------------------------------------------------------------
@@ -488,7 +488,7 @@ int WINAPI wWinMain(HINSTANCE hInst, HINSTANCE hPrevInst, PWSTR cmdLine, int nCm
     wc.hbrBackground = (HBRUSH)(COLOR_BTNFACE + 1);
     RegisterClassW(&wc);
 
-    HWND hwnd = CreateWindowW(cls, L"Game Launcher - Configure",
+    HWND hwnd = CreateWindowW(cls, L"DisplayForge - Configure",
         WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME,
         CW_USEDEFAULT, CW_USEDEFAULT, 550, 420,
         NULL, NULL, hInst, NULL);
