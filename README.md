@@ -66,3 +66,20 @@ push, with no local install required.
 - Your original display mode is always restored when the game closes, even
   if Steam relaunches the game under a new process ID during its own
   handoff.
+- The resolution/refresh switch is applied via `CDS_UPDATEREGISTRY`, which
+  registers it as the system's actual current mode rather than a throwaway
+  runtime override. This is intentional — it's what keeps the display stable
+  through exclusive-fullscreen edge cases like Task View / virtual-desktop
+  switches and controller-connect events, which would otherwise cause
+  Windows to silently fall back to the old resolution mid-game.
+  - **Trade-off:** if `Launcher.exe` is ever killed abnormally before it
+    reaches the restore step (Task Manager "End task", crash, power loss,
+    BSOD) rather than the game closing normally, your display can be left
+    on the game's resolution/refresh rate — including across a reboot,
+    since it's now the registered default rather than a session-only
+    setting. If that happens, just reopen Windows Display Settings and pick
+    your normal resolution again; nothing is damaged, it just won't
+    self-correct on its own in that specific failure case.
+- Recommended to keep the game itself in exclusive fullscreen (not
+  borderless/windowed) for best performance/latency — this tool is built
+  around and tested against that mode.
