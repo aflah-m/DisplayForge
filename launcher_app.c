@@ -51,18 +51,19 @@ static LONG SetMode(const DEVMODEW *base, DWORD width, DWORD height, DWORD hz) {
     if (result != DISP_CHANGE_SUCCESSFUL) {
         return result;
     }
-    // Deliberately NOT CDS_FULLSCREEN: that flag ties the mode to
-    // foreground-focus of a "fullscreen app" context, and Windows will
-    // silently snap back to the previous resolution the instant focus
-    // moves away (switching to desktop, Task View, some device-arrival
-    // events), even while the game process is still very much running.
-    // Plain dynamic mode change (no flags) has no such auto-revert.
-    return ChangeDisplaySettingsW(&mode, 0);
+    // Must register this as the actual current mode (not just an ephemeral
+    // dynamic override), or Windows falls back to the old registered mode
+    // whenever it needs to compose the desktop underneath an exclusive-
+    // fullscreen app -- e.g. Task View / virtual-desktop switches, or
+    // device-arrival events that briefly kick the game out of exclusive
+    // fullscreen. A plain manual change via Settings always registers this
+    // way, which is why that path never showed the revert.
+    return ChangeDisplaySettingsW(&mode, CDS_UPDATEREGISTRY);
 }
 
 static LONG RestoreMode(const DEVMODEW *original) {
     DEVMODEW mode = *original;
-    return ChangeDisplaySettingsW(&mode, 0);
+    return ChangeDisplaySettingsW(&mode, CDS_UPDATEREGISTRY);
 }
 
 static DWORD FindProcessId(const wchar_t *processName) {
